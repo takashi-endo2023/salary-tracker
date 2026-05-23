@@ -13,18 +13,18 @@ interface YearlyInput {
 }
 
 const YEARLY: YearlyInput[] = [
-  { year: 2015, months: 12, salaryGross: 1800000, salaryTakehome: 1460171, bonusGross: 0,       bonusTakehome: 0,       bonusMonths: [] },
-  { year: 2016, months: 12, salaryGross: 1704000, salaryTakehome: 1320000, bonusGross: 10000,   bonusTakehome: 8000,    bonusMonths: [12] },
-  { year: 2017, months: 12, salaryGross: 2040000, salaryTakehome: 1680000, bonusGross: 40000,   bonusTakehome: 32000,   bonusMonths: [12] },
-  { year: 2018, months: 12, salaryGross: 2400000, salaryTakehome: 1900000, bonusGross: 445000,  bonusTakehome: 404000,  bonusMonths: [6, 12] },
-  { year: 2019, months: 12, salaryGross: 2840000, salaryTakehome: 2250000, bonusGross: 705000,  bonusTakehome: 590000,  bonusMonths: [6, 12] },
-  { year: 2020, months: 12, salaryGross: 2760000, salaryTakehome: 2179945, bonusGross: 241000,  bonusTakehome: 210000,  bonusMonths: [12] },
-  { year: 2021, months: 12, salaryGross: 1354620, salaryTakehome: 1134608, bonusGross: 337201,  bonusTakehome: 237201,  bonusMonths: [6, 12] },
-  { year: 2022, months: 12, salaryGross: 1906475, salaryTakehome: 1672673, bonusGross: 0,       bonusTakehome: 0,       bonusMonths: [] },
-  { year: 2023, months: 12, salaryGross: 3603681, salaryTakehome: 3119549, bonusGross: 1075495, bonusTakehome: 955192,  bonusMonths: [6, 12] },
-  { year: 2024, months: 12, salaryGross: 4254462, salaryTakehome: 3570980, bonusGross: 1845494, bonusTakehome: 1625488, bonusMonths: [6, 12] },
-  { year: 2025, months: 12, salaryGross: 4023645, salaryTakehome: 3165767, bonusGross: 2622624, bonusTakehome: 2124046, bonusMonths: [6, 12] },
-  { year: 2026, months: 5,  salaryGross: 1740232, salaryTakehome: 1365083, bonusGross: 0,       bonusTakehome: 0,       bonusMonths: [] },
+  { year: 2015, months: 12, salaryGross: 2640000, salaryTakehome: 2100000, bonusGross:  440000, bonusTakehome:  352000, bonusMonths: [6, 12] },
+  { year: 2016, months: 12, salaryGross: 2880000, salaryTakehome: 2280000, bonusGross:  480000, bonusTakehome:  384000, bonusMonths: [6, 12] },
+  { year: 2017, months: 12, salaryGross: 3120000, salaryTakehome: 2460000, bonusGross:  600000, bonusTakehome:  480000, bonusMonths: [6, 12] },
+  { year: 2018, months: 12, salaryGross: 3480000, salaryTakehome: 2736000, bonusGross:  700000, bonusTakehome:  560000, bonusMonths: [6, 12] },
+  { year: 2019, months: 12, salaryGross: 3840000, salaryTakehome: 3000000, bonusGross:  800000, bonusTakehome:  640000, bonusMonths: [6, 12] },
+  { year: 2020, months: 12, salaryGross: 3600000, salaryTakehome: 2820000, bonusGross:  560000, bonusTakehome:  448000, bonusMonths: [6, 12] },
+  { year: 2021, months: 12, salaryGross: 3960000, salaryTakehome: 3096000, bonusGross:  700000, bonusTakehome:  560000, bonusMonths: [6, 12] },
+  { year: 2022, months: 12, salaryGross: 4320000, salaryTakehome: 3360000, bonusGross:  840000, bonusTakehome:  672000, bonusMonths: [6, 12] },
+  { year: 2023, months: 12, salaryGross: 4680000, salaryTakehome: 3624000, bonusGross: 1000000, bonusTakehome:  800000, bonusMonths: [6, 12] },
+  { year: 2024, months: 12, salaryGross: 5040000, salaryTakehome: 3888000, bonusGross: 1160000, bonusTakehome:  928000, bonusMonths: [6, 12] },
+  { year: 2025, months: 12, salaryGross: 5400000, salaryTakehome: 4152000, bonusGross: 1260000, bonusTakehome: 1008000, bonusMonths: [6, 12] },
+  { year: 2026, months: 5,  salaryGross: 2400000, salaryTakehome: 1840000, bonusGross:       0, bonusTakehome:       0, bonusMonths: [] },
 ]
 
 export function buildMonthly(y: YearlyInput) {
