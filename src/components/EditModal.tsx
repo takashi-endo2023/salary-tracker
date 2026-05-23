@@ -3,26 +3,41 @@ import type { MonthlyRecord } from '../types'
 
 interface Props {
   initial?: MonthlyRecord | null
+  records: MonthlyRecord[]
   onSave: (record: MonthlyRecord) => void
   onClose: () => void
 }
 
-const EMPTY: MonthlyRecord = {
-  year: new Date().getFullYear(),
-  month: new Date().getMonth() + 1,
-  salaryGross: 0,
-  salaryTakehome: 0,
-  bonusGross: 0,
-  bonusTakehome: 0,
-  memo: '',
-}
+const blank = (year: number, month: number): MonthlyRecord => ({
+  year, month, salaryGross: 0, salaryTakehome: 0, bonusGross: 0, bonusTakehome: 0,
+})
 
-export function EditModal({ initial, onSave, onClose }: Props) {
-  const [form, setForm] = useState<MonthlyRecord>(initial ?? EMPTY)
+const lookup = (records: MonthlyRecord[], year: number, month: number) =>
+  records.find(r => r.year === year && r.month === month) ?? null
+
+export function EditModal({ initial, records, onSave, onClose }: Props) {
+  const defaultYear = new Date().getFullYear()
+  const defaultMonth = new Date().getMonth() + 1
+  const [form, setForm] = useState<MonthlyRecord>(
+    initial ?? blank(defaultYear, defaultMonth)
+  )
 
   useEffect(() => {
-    setForm(initial ?? EMPTY)
+    setForm(initial ?? blank(defaultYear, defaultMonth))
   }, [initial])
+
+  const isExisting = !!lookup(records, form.year, form.month)
+  const isEditMode = initial != null || isExisting
+
+  const changeYear = (year: number) => {
+    const found = lookup(records, year, form.month)
+    setForm(found ?? blank(year, form.month))
+  }
+
+  const changeMonth = (month: number) => {
+    const found = lookup(records, form.year, month)
+    setForm(found ?? blank(form.year, month))
+  }
 
   const set = (key: keyof MonthlyRecord, value: string | number) =>
     setForm(prev => ({ ...prev, [key]: value }))
@@ -40,7 +55,11 @@ export function EditModal({ initial, onSave, onClose }: Props) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{initial ? `${initial.year}年${initial.month}月 編集` : '月次データを追加'}</h2>
+          <h2>
+            {isEditMode
+              ? `${form.year}年${form.month}月 編集`
+              : '月次データを追加'}
+          </h2>
           <button className="modal-close" onClick={onClose} aria-label="閉じる">×</button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -50,7 +69,7 @@ export function EditModal({ initial, onSave, onClose }: Props) {
               <input
                 type="number"
                 value={form.year}
-                onChange={e => set('year', Number(e.target.value))}
+                onChange={e => changeYear(Number(e.target.value))}
                 min={2000}
                 max={2099}
                 required
@@ -60,7 +79,7 @@ export function EditModal({ initial, onSave, onClose }: Props) {
               <label>月</label>
               <select
                 value={form.month}
-                onChange={e => set('month', Number(e.target.value))}
+                onChange={e => changeMonth(Number(e.target.value))}
               >
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}月</option>
@@ -107,17 +126,6 @@ export function EditModal({ initial, onSave, onClose }: Props) {
                 onChange={e => set('bonusTakehome', Number(e.target.value))}
                 min={0}
                 placeholder="例: 400000"
-              />
-            </div>
-
-            <div className="form-group span2">
-              <label>メモ</label>
-              <input
-                type="text"
-                value={form.memo ?? ''}
-                onChange={e => set('memo', e.target.value)}
-                placeholder="転職、ボーナス支給月など"
-                maxLength={100}
               />
             </div>
           </div>

@@ -70,30 +70,5 @@ export function useSalaryData() {
     setRecords(prev => prev.filter(r => !(r.year === year && r.month === month)))
   }, [])
 
-  const exportJson = useCallback(() => {
-    const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `salary-data-${new Date().getFullYear()}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-  }, [records])
-
-  const importJson = useCallback((file: File) => {
-    if (IS_DEMO) return
-    const reader = new FileReader()
-    reader.onload = async e => {
-      try {
-        const imported = JSON.parse(e.target?.result as string) as MonthlyRecord[]
-        for (const r of imported) await apiUpsert(r)
-        setRecords(await apiGet())
-      } catch {
-        alert('JSONの形式が正しくありません')
-      }
-    }
-    reader.readAsText(file)
-  }, [])
-
-  return { records, years, isDemo: IS_DEMO, loading, upsert, remove, exportJson, importJson }
+  return { records, years, isDemo: IS_DEMO, loading, upsert, remove }
 }

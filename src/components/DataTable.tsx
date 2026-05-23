@@ -7,11 +7,12 @@ interface Props {
   isDemo: boolean
   onEdit: (record: MonthlyRecord) => void
   onDelete: (year: number, month: number) => void
+  onAdd: () => void
 }
 
 const MONTH_NAMES = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
 
-export function DataTable({ years, isDemo, onEdit, onDelete }: Props) {
+export function DataTable({ years, isDemo, onEdit, onDelete, onAdd }: Props) {
   const rows = years.filter(d => d.totalGross > 0)
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
 
@@ -19,6 +20,7 @@ export function DataTable({ years, isDemo, onEdit, onDelete }: Props) {
     setExpanded(prev => { const n = new Set(prev); n.has(year) ? n.delete(year) : n.add(year); return n })
 
   const maxGross = Math.max(...rows.filter(r => !r.isPartial).map(r => r.totalGross))
+  const colCount = isDemo ? 7 : 8
 
   return (
     <div className="table-card">
@@ -61,10 +63,10 @@ export function DataTable({ years, isDemo, onEdit, onDelete }: Props) {
                         <span className="badge-peak">PEAK</span>
                       )}
                     </td>
-                    <td>{fmt.man(salaryGrossTotal)}万</td>
-                    <td>{bonusGrossTotal > 0 ? `${fmt.man(bonusGrossTotal)}万` : '—'}</td>
-                    <td className="strong">{fmt.man(d.totalGross)}万</td>
-                    <td className="takehome">{fmt.man(d.totalTakehome)}万</td>
+                    <td>{fmt.yen(salaryGrossTotal)}</td>
+                    <td>{bonusGrossTotal > 0 ? fmt.yen(bonusGrossTotal) : '—'}</td>
+                    <td className="strong">{fmt.yen(d.totalGross)}</td>
+                    <td className="takehome">{fmt.yen(d.totalTakehome)}</td>
                     <td className="muted">{fmt.pct(d.takehomeRate)}</td>
                     <td className={d.yoyTakehome === null ? 'muted' : d.yoyTakehome >= 0 ? 'up' : 'down'}>
                       {fmt.yoy(d.yoyTakehome)}
@@ -78,10 +80,10 @@ export function DataTable({ years, isDemo, onEdit, onDelete }: Props) {
                     return (
                       <tr key={`${m.year}-${m.month}`} className="month-row">
                         <td className="left month-cell">{MONTH_NAMES[m.month - 1]}</td>
-                        <td className="muted">{fmt.man(m.salaryGross)}万</td>
-                        <td className="muted">{m.bonusGross > 0 ? `${fmt.man(m.bonusGross)}万` : '—'}</td>
-                        <td>{fmt.man(monthlyTotal)}万</td>
-                        <td className="takehome">{fmt.man(monthlyTakehome)}万</td>
+                        <td className="muted">{fmt.yen(m.salaryGross)}</td>
+                        <td className="muted">{m.bonusGross > 0 ? fmt.yen(m.bonusGross) : '—'}</td>
+                        <td>{fmt.yen(monthlyTotal)}</td>
+                        <td className="takehome">{fmt.yen(monthlyTakehome)}</td>
                         <td className="muted">{fmt.pct(rate)}</td>
                         <td />
                         {!isDemo && (
@@ -109,6 +111,16 @@ export function DataTable({ years, isDemo, onEdit, onDelete }: Props) {
                 </>
               )
             })}
+            {!isDemo && (
+              <tr className="add-row" onClick={onAdd}>
+                <td colSpan={colCount}>
+                  <span className="add-row-inner">
+                    <span className="add-row-icon">＋</span>
+                    月次データを追加
+                  </span>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
